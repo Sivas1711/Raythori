@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - Agricultural Marketplace</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Basic Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0fdf4;
+            color: #333;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        header {
+            background-color: #22c55e;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(0); }
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #15803d;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            animation: slideUp 1s ease-out;
+        }
+
+        @keyframes slideUp {
+            0% { transform: translateY(100%); }
+            100% { transform: translateY(0); }
+        }
+
+        h2 {
+            color: #22c55e;
+            margin-bottom: 20px;
+        }
+
+        .cart-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .cart-item {
+            background-color: #f0fdf4;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .cart-item:hover {
+            transform: scale(1.05);
+        }
+
+        .cart-item h4 {
+            color: #22c55e;
+            margin-bottom: 10px;
+        }
+
+        .cart-item p {
+            margin-bottom: 10px;
+        }
+
+        .cart-item span {
+            font-weight: bold;
+        }
+
+        .cart-item button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .cart-item button:hover {
+            background-color: #c0392b;
+        }
+
+        .proceed-to-pay {
+            background-color: #22c55e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+
+        .proceed-to-pay:hover {
+            background-color: #15803d;
+        }
+
+        .success-message {
+            margin-top: 20px;
+            color: #22c55e;
+            font-weight: bold;
+            animation: fadeInText 1s ease forwards;
+        }
+
+        @keyframes fadeInText {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="sellers.html">Seller</a>
+            <a href="buyers.html">Buyer</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <h2>Your Cart</h2>
+    </header>
+
+    <div class="container">
+        <div class="cart-list" id="cart-list">
+            <!-- Cart items will be dynamically inserted here -->
+        </div>
+        <button class="proceed-to-pay" id="proceed-to-pay">Proceed to Pay</button>
+        <div class="success-message" id="success-message" style="display: none;">Payment successful!</div>
+    </div>
+
+    <script>
+        // Display cart items from localStorage
+        function displayCartItems() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartList = document.getElementById('cart-list');
+            cartList.innerHTML = '';
+
+            cart.forEach((item, index) => {
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `
+                    <h4>${item.name}</h4>
+                    <p>${item.description}</p>
+                    <p>Quantity: ${item.quantity}</p>
+                    <p>Price: ₹${item.price}</p>
+                    <p>State: ${item.state}</p>
+                    <p>District: ${item.district}</p>
+                    <button onclick="removeFromCart(${index})">Remove</button>
+                `;
+                cartList.appendChild(cartItem);
+            });
+        }
+
+        // Remove item from cart
+        function removeFromCart(index) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCartItems();
+        }
+
+        // Initial display of cart items
+        displayCartItems();
+
+        // Proceed to pay
+        document.getElementById('proceed-to-pay').addEventListener('click', function() {
+            const successMessage = document.getElementById('success-message');
+            successMessage.style.display = 'block';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+
+            // Clear the cart after successful payment
+            localStorage.removeItem('cart');
+            displayCartItems();
+        });
+    </script>
+</body>
+</html>

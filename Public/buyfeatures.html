@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyer's Dashboard - Agricultural Marketplace</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Basic Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0fdf4;
+            color: #333;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        header {
+            background-color: #22c55e;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(0); }
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #15803d;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            animation: slideUp 1s ease-out;
+        }
+
+        @keyframes slideUp {
+            0% { transform: translateY(100%); }
+            100% { transform: translateY(0); }
+        }
+
+        h2 {
+            color: #22c55e;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f0fdf4;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section h3 {
+            color: #22c55e;
+            margin-bottom: 10px;
+        }
+
+        .section p {
+            margin-bottom: 10px;
+        }
+
+        .section ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+        .section ul li {
+            margin-bottom: 5px;
+        }
+
+        .product-list, .price-comparison, .order-history {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .product-item, .price-item, .order-item {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .product-item:hover, .price-item:hover, .order-item:hover {
+            transform: scale(1.05);
+        }
+
+        .product-item h4, .price-item h4, .order-item h4 {
+            color: #22c55e;
+            margin-bottom: 10px;
+        }
+
+        .product-item p, .price-item p, .order-item p {
+            margin-bottom: 10px;
+        }
+
+        .product-item span, .price-item span, .order-item span {
+            font-weight: bold;
+        }
+
+        .product-item button, .price-item button, .order-item button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .product-item button:hover, .price-item button:hover, .order-item button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="sellers.html">Seller</a>
+            <a href="buyers.html">Buyer</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <h2>Buyer's Dashboard</h2>
+    </header>
+
+    <div class="container">
+        <div class="section">
+            <h3>Browse & Discover Agricultural Products</h3>
+            <div class="product-list" id="product-list">
+                <!-- Products will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Compare Prices Across Sellers</h3>
+            <div class="price-comparison" id="price-comparison">
+                <!-- Price comparison will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Secure Payment System</h3>
+            <p>Integrated payment gateway for safe and seamless transactions between buyers and sellers.</p>
+        </div>
+
+        <div class="section">
+            <h3>Order History & Tracking</h3>
+            <div class="order-history" id="order-history">
+                <!-- Order history will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Display products from localStorage
+        function displayProducts() {
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = '';
+
+            products.forEach((product, index) => {
+                const productItem = document.createElement('div');
+                productItem.classList.add('product-item');
+                productItem.innerHTML = `
+                    <h4>${product.name}</h4>
+                    <p>${product.description}</p>
+                    <p>Quantity: ${product.quantity}</p>
+                    <p>Price: ₹${product.price}</p>
+                    <p>State: ${product.state}</p>
+                    <p>District: ${product.district}</p>
+                    <button onclick="addToCart(${index})">Add to Cart</button>
+                `;
+                productList.appendChild(productItem);
+            });
+        }
+
+        // Add product to cart (simulated)
+        function addToCart(index) {
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            const product = products[index];
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push(product);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert('Product added to cart!');
+        }
+
+        // Initial display of products
+        displayProducts();
+
+        // Price Comparison (simulated)
+        function displayPriceComparison() {
+            const priceComparison = document.getElementById('price-comparison');
+            priceComparison.innerHTML = `
+                <div class="price-item">
+                    <h4>Product A</h4>
+                    <p>Seller 1: ₹50</p>
+                    <p>Seller 2: ₹45</p>
+                    <p>Seller 3: ₹55</p>
+                </div>
+                <div class="price-item">
+                    <h4>Product B</h4>
+                    <p>Seller 1: ₹60</p>
+                    <p>Seller 2: ₹58</p>
+                    <p>Seller 3: ₹62</p>
+                </div>
+            `;
+        }
+
+        // Initial display of price comparison
+        displayPriceComparison();
+
+        // Order History & Tracking (simulated)
+        function displayOrderHistory() {
+            const orderHistory = document.getElementById('order-history');
+            orderHistory.innerHTML = `
+                <div class="order-item">
+                    <h4>Order 1</h4>
+                    <p>Product: Product A</p>
+                    <p>Quantity: 2</p>
+                    <p>Status: Delivered</p>
+                </div>
+                <div class="order-item">
+                    <h4>Order 2</h4>
+                    <p>Product: Product B</p>
+                    <p>Quantity: 1</p>
+                    <p>Status: In Transit</p>
+                </div>
+            `;
+        }
+
+        // Initial display of order history
+        displayOrderHistory();
+    </script>
+</body>
+</html>

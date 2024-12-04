@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features - Agricultural Marketplace</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Basic Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0fdf4;
+            color: #333;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        header {
+            background-color: #22c55e;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(0); }
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #15803d;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            animation: slideUp 1s ease-out;
+        }
+
+        @keyframes slideUp {
+            0% { transform: translateY(100%); }
+            100% { transform: translateY(0); }
+        }
+
+        h2 {
+            color: #22c55e;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f0fdf4;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section h3 {
+            color: #22c55e;
+            margin-bottom: 10px;
+        }
+
+        .section p {
+            margin-bottom: 10px;
+        }
+
+        .section ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+        .section ul li {
+            margin-bottom: 5px;
+        }
+
+        .price-calculator, .order-list, .sales-analytics, .payment-management {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .price-calculator input, .price-calculator button {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: border-color 0.3s ease;
+        }
+
+        .price-calculator input:focus {
+            border-color: #22c55e;
+        }
+
+        .price-calculator button {
+            background-color: #22c55e;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .price-calculator button:hover {
+            background-color: #15803d;
+        }
+
+        .order-item, .analytics-item, .payment-item {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .order-item:hover, .analytics-item:hover, .payment-item:hover {
+            transform: scale(1.05);
+        }
+
+        .order-item h4, .analytics-item h4, .payment-item h4 {
+            color: #22c55e;
+            margin-bottom: 10px;
+        }
+
+        .order-item p, .analytics-item p, .payment-item p {
+            margin-bottom: 10px;
+        }
+
+        .order-item span, .analytics-item span, .payment-item span {
+            font-weight: bold;
+        }
+
+        .order-item button, .analytics-item button, .payment-item button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .order-item button:hover, .analytics-item button:hover, .payment-item button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="sellers.html">Seller</a>
+            <a href="buyers.html">Buyer</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <h2>Features for Sellers</h2>
+    </header>
+
+    <div class="container">
+        <section id="price-calculator" class="section">
+            <h3>Price Calculation Tool</h3>
+            <label for="production-cost">Enter Production Cost:</label>
+            <input type="number" id="production-cost" placeholder="Production Cost" required>
+            <label for="profit-margin">Enter Desired Profit Margin (%):</label>
+            <input type="number" id="profit-margin" placeholder="Profit Margin" required>
+            <button id="calculate-price">Calculate Price</button>
+            <p id="calculated-price"></p>
+        </section>
+
+        <div class="section">
+            <h3>Order Management</h3>
+            <div class="order-list" id="order-list">
+                <!-- Orders will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Sales Analytics</h3>
+            <div class="sales-analytics" id="sales-analytics">
+                <!-- Sales analytics will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Payment Management</h3>
+            <div class="payment-management" id="payment-management">
+                <!-- Payment management will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Price Calculation Tool
+        document.getElementById('calculate-price').addEventListener('click', function() {
+            const productionCost = parseFloat(document.getElementById('production-cost').value);
+            const profitMargin = parseFloat(document.getElementById('profit-margin').value);
+
+            if (isNaN(productionCost) || isNaN(profitMargin)) {
+                document.getElementById('calculated-price').textContent = 'Please enter valid numbers.';
+                return;
+            }
+
+            const calculatedPrice = productionCost + (productionCost * (profitMargin / 100));
+            document.getElementById('calculated-price').textContent = `Calculated Price: ₹${calculatedPrice.toFixed(2)}`;
+        });
+
+        // Order Management (simulated)
+        function displayOrders() {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const orderList = document.getElementById('order-list');
+            orderList.innerHTML = '';
+
+            orders.forEach((order, index) => {
+                const orderItem = document.createElement('div');
+                orderItem.classList.add('order-item');
+                orderItem.innerHTML = `
+                    <div>
+                        <h4>Order ${index + 1}</h4>
+                        <p>Product: ${order.productName}</p>
+                        <p>Quantity: ${order.quantity}</p>
+                        <p>Status: ${order.status}</p>
+                    </div>
+                    <button onclick="updateOrderStatus(${index}, 'Accepted')">Accept</button>
+                    <button onclick="updateOrderStatus(${index}, 'Rejected')">Reject</button>
+                `;
+                orderList.appendChild(orderItem);
+            });
+        }
+
+        function updateOrderStatus(index, status) {
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders[index].status = status;
+            localStorage.setItem('orders', JSON.stringify(orders));
+            displayOrders();
+        }
+
+        // Initial display of orders
+        displayOrders();
+
+        // Sales Analytics (simulated)
+        function displaySalesAnalytics() {
+            const salesAnalytics = document.getElementById('sales-analytics');
+            salesAnalytics.innerHTML = `
+                <div class="analytics-item">
+                    <h4>Top Selling Products</h4>
+                    <p>Product A: 100 units sold</p>
+                    <p>Product B: 80 units sold</p>
+                </div>
+                <div class="analytics-item">
+                    <h4>Revenue Trends</h4>
+                    <p>January: ₹50,000</p>
+                    <p>February: ₹60,000</p>
+                </div>
+            `;
+        }
+
+        // Initial display of sales analytics
+        displaySalesAnalytics();
+
+        // Payment Management (simulated)
+        function displayPaymentManagement() {
+            const paymentManagement = document.getElementById('payment-management');
+            paymentManagement.innerHTML = `
+                <div class="payment-item">
+                    <h4>Earnings</h4>
+                    <p>Total Earnings: ₹1,00,000</p>
+                    <p>Pending Withdrawals: ₹20,000</p>
+                </div>
+                <div class="payment-item">
+                    <h4>Transaction History</h4>
+                    <p>January: ₹50,000</p>
+                    <p>February: ₹60,000</p>
+                </div>
+            `;
+        }
+
+        // Initial display of payment management
+        displayPaymentManagement();
+    </script>
+</body>
+</html>

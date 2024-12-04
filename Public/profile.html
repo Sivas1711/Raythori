@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+
+        header {
+            background-color: #22c55e;
+            padding: 1rem;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+
+        header .logout-btn {
+            color: #fff;
+            text-decoration: none;
+            background-color: #e74c3c;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+
+        header .logout-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* Profile Section Styles */
+        .profile-container {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .profile-container:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-container h2 {
+            text-align: center;
+            color: #15803d;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .profile-field {
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-field label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .profile-field input,
+        .profile-field textarea {
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease;
+        }
+
+        .profile-field input:focus,
+        .profile-field textarea:focus {
+            border-color: #22c55e;
+            outline: none;
+        }
+
+        .profile-field textarea {
+            height: 150px;
+        }
+
+        button {
+            background-color: #22c55e;
+            color: #fff;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #15803d;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .profile-container {
+                margin: 2rem;
+                padding: 1.5rem;
+            }
+
+            header .logo {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Footer Section */
+        footer {
+            background-color: #22c55e;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <a href="/index.html" class="logo">Raythori</a>
+            <a href="../index.html" class="logout-btn" onclick="logout()">Logout</a>
+        </nav>
+    </header>
+
+    <div class="profile-container">
+        <h2>User Profile</h2>
+        <form id="profile-form">
+            <div class="profile-field">
+                <label for="userName">Name:</label>
+                <input type="text" id="userName" placeholder="Enter your name" required>
+            </div>
+            <div class="profile-field">
+                <label for="userEmail">Email:</label>
+                <input type="email" id="userEmail" disabled placeholder="Your email" required>
+            </div>
+            <div class="profile-field">
+                <label for="userBio">Bio:</label>
+                <textarea id="userBio" placeholder="Tell us something about yourself"></textarea>
+            </div>
+            <button type="button" onclick="updateUserProfile()">Update Profile</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>Powered by <a href="#">Raythori</a></p>
+    </footer>
+
+    <script type="module">
+        // Firebase Setup
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js';
+        import { getFirestore, doc, getDoc, setDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js';
+
+        // Your Firebase Config (replace with your own)
+        const firebaseConfig = {
+            apiKey: "AIzaSyD2niq-vHFMT8fkEyy0bvC8LMhXIWGb7qs",
+            authDomain: "mini-project-d692a.firebaseapp.com",
+            projectId: "mini-project-d692a",
+            storageBucket: "mini-project-d692a.firebasestorage.app",
+            messagingSenderId: "871464611233",
+            appId: "1:871464611233:web:557ad9fd875ab45ee7afe0",
+            measurementId: "G-61QSKZR0Z2"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Listen for auth state changes (login/logout)
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("User logged in:", user);
+                loadUserProfile(user);
+            } else {
+                console.log("No user logged in");
+                window.location.href = "/Public/login.html";
+            }
+        });
+
+        // Function to load the user profile data
+        async function loadUserProfile(user) {
+            const userRef = doc(db, "users", user.uid);
+            const docSnap = await getDoc(userRef);
+
+            if (docSnap.exists()) {
+                const userData = docSnap.data();
+                document.getElementById('userName').value = userData.name;
+                document.getElementById('userEmail').value = user.email;
+                document.getElementById('userBio').value = userData.bio || '';
+            }
+        }
+
+        // Function to update user profile info
+        async function updateUserProfile() {
+            const user = auth.currentUser;
+            if (user) {
+                const userRef = doc(db, "users", user.uid);
+                await updateDoc(userRef, {
+                    name: document.getElementById('userName').value,
+                    bio: document.getElementById('userBio').value
+                });
+                alert("Profile updated successfully!");
+            }
+        }
+
+        // Function to log out the user
+        function logout() {
+            signOut(auth).then(() => {
+                window.location.href = "/Public/login.html";
+            }).catch((error) => {
+                console.error("Error signing out:", error);
+            });
+        }
+    </script>
+
+</body>
+
+</html>

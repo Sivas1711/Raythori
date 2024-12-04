@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Section with Animation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .contact-section {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .contact-section input,
+        .contact-section textarea,
+        .contact-section button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .contact-section input:focus,
+        .contact-section textarea:focus {
+            border-color: #4CAF50;
+            outline: none;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+        }
+
+        .contact-section button {
+            background: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            transition: transform 0.2s, background-color 0.3s;
+        }
+
+        .contact-section button:hover {
+            background: #45a049;
+            transform: translateY(-3px);
+        }
+
+        .contact-section button:active {
+            transform: translateY(2px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes inputFocus {
+            0% {
+                box-shadow: 0 0 0 rgba(76, 175, 80, 0);
+            }
+            100% {
+                box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contact-section">
+        <h2>Contact Us</h2>
+        <form id="contact-form">
+            <input type="text" id="name" placeholder="Your Name" required>
+            <input type="email" id="email" placeholder="Your Email" required>
+            <textarea id="message" rows="4" placeholder="Your Message" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+
+    <script>
+        // Add an animation on focus
+        const inputs = document.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.style.animation = "inputFocus 0.4s forwards";
+            });
+            input.addEventListener('blur', () => {
+                input.style.animation = "none";
+            });
+        });
+
+        // Simple form submission simulation
+        const form = document.getElementById('contact-form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Message Sent Successfully!');
+            form.reset();
+        });
+    </script>
+</body>
+</html>
